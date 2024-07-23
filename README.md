@@ -1,4 +1,4 @@
-# Commune Subnet Templeate
+# Comtensor Subnet
 
 Subnet template built on top of [CommuneX](https://github.com/agicommies/communex).
 

@@ -228,7 +228,10 @@ class TextValidator(Module):
                 client.call(
                     "generate",
                     miner_key,
-                    {"prompt": question},
+                    {
+                        "prompt": question,
+                        "model": "bittensor"
+                     },
                     timeout=self.call_timeout,  #  type: ignore
                 )
             )
@@ -254,8 +257,7 @@ class TextValidator(Module):
         # Implement your custom scoring logic here
         if not miner_answer:
             return 0
-
-        return 0
+        return 1
 
     def get_miner_prompt(self) -> str:
         """

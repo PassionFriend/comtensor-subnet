@@ -27,6 +27,9 @@ class Miner(Module):
             None
         """
         print(f"Answering: `{prompt}` with model `{model}`")
+        result = {}
+        result["answer"] = f"`{prompt}` with model `{model}`"
+        return result
 
 
 if __name__ == "__main__":
