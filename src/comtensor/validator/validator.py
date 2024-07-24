@@ -230,12 +230,14 @@ class TextValidator(Module):
                     miner_key,
                     {
                         "prompt": question,
-                        "model": "bittensor"
+                        "type": "prompt",
+                        "netuid": 18
                      },
                     timeout=self.call_timeout,  #  type: ignore
                 )
             )
             miner_answer = miner_answer["answer"]
+            log(f"✅ {miner_answer}")
 
         except Exception as e:
             log(f"Miner {module_ip}:{module_port} failed to generate an answer")
@@ -268,7 +270,7 @@ class TextValidator(Module):
         """
 
         # Implement your custom prompt generation logic here
-        return "foo"
+        return "What is blockchain?"
 
     async def validate_step(
         self, syntia_netuid: int, settings: ValidatorSettings

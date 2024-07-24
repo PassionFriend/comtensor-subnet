@@ -1,7 +1,9 @@
 from communex.module import Module, endpoint
 from communex.key import generate_keypair
 from keylimiter import TokenBucketLimiter
-
+from comtensor.miner.crossvals.cortex.cortex import CortexCrossVal
+from pydantic import BaseModel
+import bittensor as bt
 
 class Miner(Module):
     """
@@ -15,22 +17,31 @@ class Miner(Module):
     """
 
     @endpoint
-    def generate(self, prompt: str, model: str = "foo"):
+    async def generate(self, prompt: str, type: str, netuid: int):
         """
         Generates a response to a given prompt using a specified model.
 
         Args:
             prompt: The prompt to generate a response for.
             model: The model to use for generating the response (default: "gpt-3.5-turbo").
+            netuid: netuid
 
         Returns:
             None
         """
-        print(f"Answering: `{prompt}` with model `{model}`")
+        subtensor = bt.subtensor()
+        cortex_crossval = CortexCrossVal(subtensor=subtensor)
+        print(f"Answering: `{prompt}` with model `{type}`")
         result = {}
-        result["answer"] = f"`{prompt}` with model `{model}`"
+        if type == "prompt":
+            if netuid == 18:
+                result["answer"] = await cortex_crossval.run(CortexItem(type="text", provider="OpenAI", prompt=prompt))
         return result
 
+class CortexItem(BaseModel):
+    type: str
+    provider: str
+    prompt: str
 
 if __name__ == "__main__":
     """
