@@ -24,6 +24,8 @@ import concurrent.futures
 import re
 import time
 from functools import partial
+from datatrove.pipeline.readers import ParquetReader
+import random
 
 from communex.client import CommuneClient  # type: ignore
 from communex.module.client import ModuleClient  # type: ignore
@@ -270,7 +272,11 @@ class TextValidator(Module):
         """
 
         # Implement your custom prompt generation logic here
-        return "What is blockchain?"
+        data_reader = ParquetReader("hf://datasets/HuggingFaceFW/fineweb/data", limit=100) 
+        random_number = random.randint(0, 99)
+        for i, document in enumerate(data_reader()):
+            if random_number < i:
+                return document.text
 
     async def validate_step(
         self, syntia_netuid: int, settings: ValidatorSettings
